@@ -1,9 +1,10 @@
 #include <iostream>
 #include "game_system.hpp"
-#include "game.hpp"
+#include "game_parameters.hpp"
 #include "bullet.hpp"
 
 std::vector<Ship *> GameSystem::ships;
+sf::Texture GameSystem::spritesheet;
 
 void GameSystem::Load() {
   if (!spritesheet.loadFromFile("/home/leni/git/set09121_labs/lab_3/resources/img/invaders_sheet.png")) {

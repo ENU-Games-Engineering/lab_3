@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "game.hpp"
+#include "game_parameters.hpp"
 #include "game_system.hpp"
 #include "ship.hpp"
 

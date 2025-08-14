@@ -1,7 +1,7 @@
 #include <iostream>
 #include "ship.hpp"
 #include "game_system.hpp"
-#include "game.hpp"
+#include "game_parameters.hpp"
 #include "bullet.hpp"
 
 bool Invader::direction = true;
@@ -13,7 +13,7 @@ Ship::Ship(){}
 
 Ship::Ship(sf::IntRect ir) : sf::Sprite() {
   _sprite = ir;
-  setTexture(spritesheet);
+  setTexture(GameSystem::spritesheet);
   setTextureRect(_sprite);
 };
 

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "bullet.hpp"
-#include "game.hpp"
+#include "game_parameters.hpp"
 #include "game_system.hpp"
 
 unsigned char Bullet::bulletPointer;
@@ -29,7 +29,7 @@ void Bullet::Fire(const sf::Vector2f &pos, const bool mode){
 }
 void Bullet::Init(){
     for(int i = 0; i < 256; i++){
-        bullets[i].setTexture(spritesheet);
+        bullets[i].setTexture(GameSystem::spritesheet);
         bullets[i].setOrigin(Ship::width/2.f,Ship::height/2.f);
         bullets[i].setPosition(-100,-100);   
     }

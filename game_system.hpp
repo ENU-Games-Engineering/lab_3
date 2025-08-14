@@ -5,6 +5,7 @@
 
 struct GameSystem{
     static std::vector<Ship *> ships;
+    static sf::Texture spritesheet;
 
     static void Load();
     static void Clean();

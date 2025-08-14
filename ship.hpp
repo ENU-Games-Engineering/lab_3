@@ -22,8 +22,8 @@ public:
     
     float explosion_time = 0.1f;
 
-    constexpr static uint16_t width = 32;
-    constexpr static uint16_t height = 32;
+    constexpr static int width = 32;
+    constexpr static int height = 32;
 };
 
 class Invader : public Ship {
@@ -37,10 +37,10 @@ public:
     static float firetime;
 
 
-    constexpr static uint16_t spacing = 18;
-    constexpr static uint16_t rows = 5;
-    constexpr static uint16_t columns = 12;
-    constexpr static uint16_t down = 24;
+    constexpr static int spacing = 18;
+    constexpr static int rows = 5;
+    constexpr static int columns = 12;
+    constexpr static int down = 24;
     constexpr static float acc = 10.f;
 };
 
