@@ -19,6 +19,8 @@ public:
     virtual void move_down();
 
     bool is_exploded() const;
+    
+    float explosion_time = 0.1f;
 
     constexpr static uint16_t width = 32;
     constexpr static uint16_t height = 32;
@@ -32,6 +34,8 @@ public:
 
     static bool direction;
     static float speed;
+    static float firetime;
+
 
     constexpr static uint16_t spacing = 18;
     constexpr static uint16_t rows = 5;
@@ -45,5 +49,7 @@ public:
   Player();
   void Update(const float &dt) override;
   void move_down() override{}
+  static float firetime;
+
   constexpr static uint16_t speed = 100.f;
 };

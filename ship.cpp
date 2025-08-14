@@ -4,7 +4,12 @@
 #include "game.hpp"
 #include "bullet.hpp"
 
-Ship::Ship() {};
+bool Invader::direction = true;
+float Invader::speed = 10.f;
+float Invader::firetime = 0.0f;
+float Player::firetime = 0.0f;
+
+Ship::Ship(){}
 
 Ship::Ship(sf::IntRect ir) : sf::Sprite() {
   _sprite = ir;
@@ -12,7 +17,12 @@ Ship::Ship(sf::IntRect ir) : sf::Sprite() {
   setTextureRect(_sprite);
 };
 
-void Ship::Update(const float &dt) {}
+void Ship::Update(const float &dt) {
+    if(_exploded)
+      explosion_time-=dt;
+    if(explosion_time <= 0)
+      setPosition(-100,-100);
+}
 void Ship::Explode() {
 	setTextureRect(sf::IntRect(sf::Vector2i(128, 32), sf::Vector2i(32, 32)));
     _exploded = true;
@@ -29,9 +39,6 @@ void Ship::move_down(){
   move(sf::Vector2f(0.0f, Invader::down));
 }
 
-bool Invader::direction = true;
-float Invader::speed = 10.f;
-
 Invader::Invader() : Ship() {}
 
 Invader::Invader(sf::IntRect ir, sf::Vector2f pos) : Ship(ir) {
@@ -42,9 +49,10 @@ Invader::Invader(sf::IntRect ir, sf::Vector2f pos) : Ship(ir) {
 void Invader::Update(const float &dt) {
   Ship::Update(dt);
 
-  static float firetime = 0.0f;
-  firetime -= dt;
+  if(_exploded)
+    return;
 
+  firetime -= dt;
 
   move(dt * (direction ? 1.0f : -1.0f) * speed, 0.0f);
     
@@ -74,7 +82,9 @@ Player::Player() :
 void Player::Update(const float &dt) {
     Ship::Update(dt);
 
-    static float firetime = 0.0f;
+    if(_exploded)
+      return;
+
     firetime -= dt;
 
     //Move left
