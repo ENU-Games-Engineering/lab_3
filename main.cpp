@@ -5,19 +5,31 @@
 #include "game_system.hpp"
 #include "ship.hpp"
 
+using gs = GameSystem;
+using param = Parameters;
+
 sf::Texture spritesheet;
 
 int main(){
-  sf::RenderWindow window(sf::VideoMode({game_width, game_height}), "SPACE Invaders");
+  	sf::RenderWindow window(sf::VideoMode({param::game_width, param::game_height}), "SPACE Invaders");
   
-  GameSystem::Load();
+  	gs::init();
 	while(window.isOpen()){
+		static sf::Clock clock;
+		float dt = clock.restart().asSeconds();
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
+				window.close();
+				return 0;
+			}
+		}
 		window.clear();
-		GameSystem::Update(window);
-		GameSystem::Render(window);
+		gs::update(dt);
+		gs::render(window);
 		//Wait for Vsync
-    window.display();
+		window.display();
 	}
-  GameSystem::Clean();
-  return 0;
+	gs::clean();
+	return 0;
 }

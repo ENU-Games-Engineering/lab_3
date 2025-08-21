@@ -3,50 +3,51 @@
 #include "game_parameters.hpp"
 #include "bullet.hpp"
 
-std::vector<Ship *> GameSystem::ships;
+using param = Parameters;
+
+std::vector<std::shared_ptr<Ship>> GameSystem::ships;
 sf::Texture GameSystem::spritesheet;
 
-void GameSystem::Load() {
-  if (!spritesheet.loadFromFile("/home/leni/git/set09121_labs/lab_3/resources/img/invaders_sheet.png")) {
+void GameSystem::init() {
+  if (!spritesheet.loadFromFile("resources/img/invaders_sheet.png")) {
     std::cerr << "Failed to load spritesheet!" << std::endl;
   }
-  Bullet::Init();
-  Ship *player = new Player();
+  reset();
+}
+
+void GameSystem::reset(){
+  Bullet::init();
+  std::shared_ptr<Ship> player = std::make_shared<Player>();
   ships.push_back(player);
-  for (int r = 0; r < Invader::rows; ++r) {
+  for (int r = 0; r < param::rows; ++r) {
     sf::IntRect rect(sf::Vector2i(32*r, 0), sf::Vector2i(32, 32));
-    for (int c = 0; c < Invader::columns; ++c) {
-        sf::Vector2f position(c*(Ship::width+Invader::spacing)+Ship::width/2.f,
-                              r*(Ship::height+Invader::spacing)+Ship::height/2.f);
-        Invader *inv = new Invader(rect, position);
+    for (int c = 0; c < param::columns; ++c) {
+        sf::Vector2f position(c*(param::sprite_size+param::spacing)+param::sprite_size/2.f,
+                              r*(param::sprite_size+param::spacing)+param::sprite_size/2.f);
+        std::shared_ptr<Invader> inv = std::make_shared<Invader>(rect, position);
         ships.push_back(inv);
     }
   }
 }
 
-void GameSystem::Clean(){
-  for(Ship *ship: ships)
-    delete ship;
+void GameSystem::clean(){
+  for(std::shared_ptr<Ship> &ship: ships)
+    ship.reset();
   ships.clear();
 }
 
-void GameSystem::Update(sf::RenderWindow &window){
-  static sf::Clock clock;
-  float dt = clock.restart().asSeconds();
-  sf::Event event;
-  while (window.pollEvent(event)) {
-    if (event.type == sf::Event::Closed) {
-        window.close();
-        return;
-    }
+void GameSystem::update(const float &dt){
+  if(ships[0]->is_exploded()){
+    clean();
+    reset();
   }
-  for (Ship *s : ships) 
-    s->Update(dt);
-  Bullet::Update(dt);
+  for (std::shared_ptr<Ship> &s : ships) 
+    s->update(dt);
+  Bullet::update(dt);
 }
 
-void GameSystem::Render(sf::RenderWindow &window){
-    for (const Ship *s : ships) 
-      window.draw(*s);
-    Bullet::Render(window);
+void GameSystem::render(sf::RenderWindow &window){
+    for (const std::shared_ptr<Ship> &s : ships) 
+      window.draw(*(s.get()));
+    Bullet::render(window);
 }

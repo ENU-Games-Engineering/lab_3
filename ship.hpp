@@ -2,54 +2,45 @@
 #include <SFML/Graphics.hpp>
 
 class Ship : public sf::Sprite {
-protected:
-    sf::IntRect _sprite;
-    //Default constructor is hidden
-    Ship();
-
-    bool _exploded = false;
 public:
+    Ship();
+    //Copy constructor
+    Ship(const Ship &s);
     //Constructor that takes a sprite
-    explicit Ship(sf::IntRect ir);
+    Ship(sf::IntRect ir);
     //Pure virtual deconstructor -- makes this an abstract class and avoids undefined behaviour!
     virtual ~Ship() = 0;
     //Update, virtual so can be overridden, but not pure virtual
-    virtual void Update(const float &dt);
-    virtual void Explode();
+    virtual void update(const float &dt);
+    virtual void explode();
     virtual void move_down();
 
     bool is_exploded() const;
     
     float explosion_time = 0.1f;
 
-    constexpr static int width = 32;
-    constexpr static int height = 32;
+protected:
+    sf::IntRect _sprite;
+    bool _exploded = false;
 };
 
 class Invader : public Ship {
 public:
-    Invader(sf::IntRect ir, sf::Vector2f pos);
     Invader();
-    void Update(const float &dt) override;
+    Invader(const Invader& inv);
+    Invader(sf::IntRect ir, sf::Vector2f pos);
+    void update(const float &dt) override;
 
     static bool direction;
     static float speed;
     static float firetime;
-
-
-    constexpr static int spacing = 18;
-    constexpr static int rows = 5;
-    constexpr static int columns = 12;
-    constexpr static int down = 24;
-    constexpr static float acc = 10.f;
 };
 
 class Player : public Ship {
 public:
   Player();
-  void Update(const float &dt) override;
+  void update(const float &dt) override;
   void move_down() override{}
   static float firetime;
-
-  constexpr static uint16_t speed = 100.f;
+  static constexpr int speed = 100.f;
 };
