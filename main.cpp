@@ -8,8 +8,6 @@
 using gs = GameSystem;
 using param = Parameters;
 
-sf::Texture spritesheet;
-
 int main(){
   	sf::RenderWindow window(sf::VideoMode({param::game_width, param::game_height}), "SPACE Invaders");
   
@@ -27,6 +25,7 @@ int main(){
 		window.clear();
 		gs::update(dt);
 		gs::render(window);
+		sf::sleep(sf::seconds(param::time_step));
 		//Wait for Vsync
 		window.display();
 	}
